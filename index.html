@@ -172,10 +172,32 @@
 
   .card .grip {
     color: var(--text-dim);
-    font-size: 12px;
+    font-size: 15px;
     margin-top: 1px;
     letter-spacing: 1px;
     line-height: 1;
+    padding: 4px 6px 4px 2px;
+    margin-left: -2px;
+    touch-action: none;
+    cursor: grab;
+  }
+
+  .card.dragging-source {
+    opacity: 0.3;
+  }
+
+  .card-placeholder {
+    border: 2px dashed rgba(212,175,106,0.4);
+    border-radius: 7px;
+    background: rgba(212,175,106,0.06);
+  }
+
+  .drag-ghost {
+    position: fixed;
+    z-index: 999;
+    pointer-events: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transform: scale(1.02) rotate(-1deg);
   }
 
   .card .label-wrap { flex: 1; min-width: 0; }
@@ -408,7 +430,6 @@
   function createCard(text, dateLabel) {
     const card = document.createElement('div');
     card.className = 'card';
-    card.draggable = true;
     card.id = nextId();
     card.innerHTML =
       '<span class="grip">::</span>' +
@@ -419,13 +440,7 @@
     card.querySelector('.label').textContent = text;
     if (dateLabel) card.querySelector('.date').textContent = 'Completed ' + dateLabel;
 
-    card.addEventListener('dragstart', () => {
-      card.classList.add('dragging');
-    });
-    card.addEventListener('dragend', () => {
-      card.classList.remove('dragging');
-      updateCounts();
-    });
+    initDragHandle(card);
 
     card.querySelector('.action').addEventListener('click', () => {
       const currentCol = card.closest('.column').dataset.col;
@@ -470,39 +485,89 @@
   updateCounts();
   if (!savedState) saveState();
 
-  // drag and drop wiring per column
-  document.querySelectorAll('.column').forEach(column => {
+  // drag and drop: Pointer Events, works for touch, mouse, and pen alike
+  let dragCard = null, dragGhost = null, dragPlaceholder = null, activePointerId = null;
+  let dragOffsetX = 0, dragOffsetY = 0;
+
+  function initDragHandle(card) {
+    const grip = card.querySelector('.grip');
+    grip.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      e.preventDefault();
+      startDrag(card, e);
+    });
+  }
+
+  function startDrag(card, e) {
+    activePointerId = e.pointerId;
+    dragCard = card;
+    const rect = card.getBoundingClientRect();
+    dragOffsetX = e.clientX - rect.left;
+    dragOffsetY = e.clientY - rect.top;
+
+    dragPlaceholder = document.createElement('div');
+    dragPlaceholder.className = 'card-placeholder';
+    dragPlaceholder.style.height = rect.height + 'px';
+    card.parentNode.insertBefore(dragPlaceholder, card.nextSibling);
+
+    dragGhost = card.cloneNode(true);
+    dragGhost.classList.add('drag-ghost');
+    dragGhost.style.width = rect.width + 'px';
+    dragGhost.style.left = rect.left + 'px';
+    dragGhost.style.top = rect.top + 'px';
+    document.body.appendChild(dragGhost);
+
+    card.classList.add('dragging-source');
+
+    document.addEventListener('pointermove', onDragMove);
+    document.addEventListener('pointerup', onDragEnd);
+    document.addEventListener('pointercancel', onDragEnd);
+  }
+
+  function onDragMove(e) {
+    if (e.pointerId !== activePointerId) return;
+    e.preventDefault();
+    dragGhost.style.left = (e.clientX - dragOffsetX) + 'px';
+    dragGhost.style.top = (e.clientY - dragOffsetY) + 'px';
+
+    const target = document.elementFromPoint(e.clientX, e.clientY);
+    if (!target) return;
+    const column = target.closest('.column');
+    if (!column) return;
     const list = column.querySelector('.cards');
+    document.querySelectorAll('.column').forEach(c => c.classList.remove('drag-over'));
+    column.classList.add('drag-over');
 
-    column.addEventListener('dragover', e => {
-      e.preventDefault();
-      column.classList.add('drag-over');
-      const dragging = document.querySelector('.dragging');
-      if (!dragging) return;
-      const afterEl = getDragAfterElement(list, e.clientY);
-      if (afterEl == null) {
-        list.appendChild(dragging);
-      } else {
-        list.insertBefore(dragging, afterEl);
-      }
-    });
+    const after = getDragAfterElement(list, e.clientY);
+    if (after == null) {
+      list.appendChild(dragPlaceholder);
+    } else {
+      list.insertBefore(dragPlaceholder, after);
+    }
+  }
 
-    column.addEventListener('dragleave', e => {
-      if (!column.contains(e.relatedTarget)) {
-        column.classList.remove('drag-over');
-      }
-    });
+  function onDragEnd(e) {
+    if (e.pointerId !== activePointerId) return;
+    document.removeEventListener('pointermove', onDragMove);
+    document.removeEventListener('pointerup', onDragEnd);
+    document.removeEventListener('pointercancel', onDragEnd);
 
-    column.addEventListener('drop', e => {
-      e.preventDefault();
-      column.classList.remove('drag-over');
-      updateCounts();
-      saveState();
-    });
-  });
+    if (dragPlaceholder && dragPlaceholder.parentNode) {
+      dragPlaceholder.parentNode.insertBefore(dragCard, dragPlaceholder);
+      dragPlaceholder.remove();
+    }
+    if (dragGhost) dragGhost.remove();
+    dragCard.classList.remove('dragging-source');
+    document.querySelectorAll('.column').forEach(c => c.classList.remove('drag-over'));
+
+    dragGhost = null; dragPlaceholder = null; dragCard = null; activePointerId = null;
+
+    updateCounts();
+    saveState();
+  }
 
   function getDragAfterElement(container, y) {
-    const cards = [...container.querySelectorAll('.card:not(.dragging)')];
+    const cards = [...container.querySelectorAll('.card:not(.dragging-source)')];
     return cards.reduce((closest, child) => {
       const box = child.getBoundingClientRect();
       const offset = y - box.top - box.height / 2;
