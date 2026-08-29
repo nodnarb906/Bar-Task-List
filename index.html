@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Bar task board</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#16241C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bar Tasks">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #16241C;
+    --bg-panel: #1E3227;
+    --bg-panel-2: #223A2C;
+    --card-bg: #FAF6EC;
+    --card-bg-hover: #FFFDF7;
+    --copper: #C17A3D;
+    --brass: #D4AF6A;
+    --chalk: #F2EDE0;
+    --chalk-dim: #A9B8AC;
+    --text-dark: #2A2118;
+    --text-dim: #6B6152;
+    --danger: #C1543D;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg-deep);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--chalk);
+    padding: 28px 20px 60px;
+    min-height: 100vh;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  header .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brass);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: 0.02em;
+    margin: 0;
+    color: var(--chalk);
+  }
+
+  header p {
+    font-size: 13px;
+    color: var(--chalk-dim);
+    margin: 8px 0 0;
+  }
+
+  .board {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 760px) {
+    .board { flex-direction: row; align-items: flex-start; }
+  }
+
+  .column {
+    background: var(--bg-panel);
+    border: 1px solid rgba(212,175,106,0.18);
+    border-radius: 10px;
+    padding: 16px;
+    flex: 1;
+    min-width: 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .column.drag-over {
+    background: var(--bg-panel-2);
+    border-color: var(--brass);
+  }
+
+  .col-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(212,175,106,0.25);
+  }
+
+  .col-head svg { flex-shrink: 0; }
+
+  .col-titles { flex: 1; min-width: 0; }
+
+  .col-titles h2 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: 0.03em;
+    margin: 0;
+    color: var(--brass);
+  }
+
+  .col-titles .sub {
+    font-size: 11.5px;
+    color: var(--chalk-dim);
+    margin-top: 2px;
+  }
+
+  .count {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--bg-deep);
+    background: var(--brass);
+    border-radius: 20px;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 40px;
+    padding-top: 12px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    color: var(--text-dark);
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.35;
+    cursor: grab;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+    user-select: none;
+    border-left: 3px solid var(--copper);
+  }
+
+  .card:hover { background: var(--card-bg-hover); }
+  .card.dragging { opacity: 0.35; cursor: grabbing; }
+
+  .card .grip {
+    color: var(--text-dim);
+    font-size: 12px;
+    margin-top: 1px;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .card .label-wrap { flex: 1; min-width: 0; }
+  .card .label { display: block; }
+
+  .card .action {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+
+  .card .action:hover { color: var(--copper); background: rgba(193,84,61,0.1); }
+  .card .icon-trash { display: none; }
+
+  .card .date {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .column-cellar { border-color: rgba(169,184,172,0.25); }
+  .column-cellar .col-titles h2 { color: var(--chalk-dim); }
+  .column-cellar .count { background: var(--chalk-dim); }
+  .column-cellar .card {
+    border-left-color: var(--chalk-dim);
+    opacity: 0.82;
+  }
+  .column-cellar .card .icon-check { display: none; }
+  .column-cellar .card .icon-trash { display: inline; }
+  .column-cellar .card .action:hover { color: var(--danger); }
+
+  .empty-hint[data-hint] {
+    display: none;
+    margin-top: 12px;
+  }
+  .empty-hint[data-hint].visible { display: block; }
+
+  .add-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .add-row input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,175,106,0.3);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--chalk);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .add-row input::placeholder { color: var(--chalk-dim); }
+  .add-row input:focus { outline: none; border-color: var(--brass); }
+
+  .add-row button {
+    background: var(--copper);
+    color: var(--chalk);
+    border: none;
+    border-radius: 6px;
+    padding: 0 14px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .add-row button:hover { background: var(--brass); color: var(--bg-deep); }
+
+  .empty-hint {
+    font-size: 12.5px;
+    color: var(--chalk-dim);
+    font-style: italic;
+    padding: 4px 2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">The list that never ends</div>
+  <h1>Bar task board</h1>
+  <p>Drag tasks between columns as their scope changes. Add new ones as they come up.</p>
+</header>
+
+<div class="board" id="board">
+
+  <div class="column" data-col="shot">
+    <div class="col-head">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <path d="M8 3H16L15 15C15 16.6569 13.6569 18 12 18C10.3431 18 9 16.6569 9 15L8 3Z" stroke="#D4AF6A" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="7" y1="3" x2="17" y2="3" stroke="#D4AF6A" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="9.4" y1="10" x2="14.6" y2="10" stroke="#D4AF6A" stroke-width="1.2"/>
+      </svg>
+      <div class="col-titles">
+        <h2>Shot</h2>
+        <div class="sub">Quick hits &middot; under an hour</div>
+      </div>
+      <div class="count" data-count="shot">0</div>
+    </div>
+    <div class="cards" data-list="shot"></div>
+    <div class="add-row">
+      <input type="text" placeholder="Add a quick task..." data-input="shot">
+      <button data-add="shot">+</button>
+    </div>
+  </div>
+
+  <div class="column" data-col="pint">
+    <div class="col-head">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <path d="M6 3H18L16.8 19C16.7 20.1 15.8 21 14.6 21H9.4C8.2 21 7.3 20.1 7.2 19L6 3Z" stroke="#D4AF6A" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="5" y1="3" x2="19" y2="3" stroke="#D4AF6A" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M7 8H17" stroke="#D4AF6A" stroke-width="1.2"/>
+      </svg>
+      <div class="col-titles">
+        <h2>Pint</h2>
+        <div class="sub">Half-day projects</div>
+      </div>
+      <div class="count" data-count="pint">0</div>
+    </div>
+    <div class="cards" data-list="pint"></div>
+    <div class="add-row">
+      <input type="text" placeholder="Add a half-day project..." data-input="pint">
+      <button data-add="pint">+</button>
+    </div>
+  </div>
+
+  <div class="column" data-col="keg">
+    <div class="col-head">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <rect x="5" y="5" width="14" height="16" rx="2" stroke="#D4AF6A" stroke-width="1.5"/>
+        <line x1="5" y1="10" x2="19" y2="10" stroke="#D4AF6A" stroke-width="1.2"/>
+        <line x1="5" y1="16" x2="19" y2="16" stroke="#D4AF6A" stroke-width="1.2"/>
+        <rect x="10" y="2" width="4" height="3" rx="0.5" stroke="#D4AF6A" stroke-width="1.5"/>
+      </svg>
+      <div class="col-titles">
+        <h2>Keg</h2>
+        <div class="sub">Big undertakings</div>
+      </div>
+      <div class="count" data-count="keg">0</div>
+    </div>
+    <div class="cards" data-list="keg"></div>
+    <div class="add-row">
+      <input type="text" placeholder="Add a big project..." data-input="keg">
+      <button data-add="keg">+</button>
+    </div>
+  </div>
+
+  <div class="column column-cellar" data-col="cellar">
+    <div class="col-head">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <rect x="4" y="4" width="16" height="4" rx="1" stroke="#A9B8AC" stroke-width="1.5"/>
+        <rect x="4" y="10" width="16" height="4" rx="1" stroke="#A9B8AC" stroke-width="1.5"/>
+        <rect x="4" y="16" width="16" height="4" rx="1" stroke="#A9B8AC" stroke-width="1.5"/>
+      </svg>
+      <div class="col-titles">
+        <h2>Cellar</h2>
+        <div class="sub">Done &middot; logged for the record</div>
+      </div>
+      <div class="count" data-count="cellar">0</div>
+    </div>
+    <div class="cards" data-list="cellar"></div>
+    <div class="empty-hint" data-hint="cellar">Finished tasks land here, dated.</div>
+  </div>
+
+</div>
+
+<script>
+  const initialData = {
+    shot: [
+      "Fix plexiglass",
+      "Swap sodas out between tap and bar",
+      "Add correct up-charge buttons for margaritas",
+      "Clean draft lines"
+    ],
+    pint: [
+      "Tidy up modifiers",
+      "Find and order new bloody glasses",
+      "Decide and order new bloody garnishes",
+      "Re-do tap handles",
+      "Finish flight boards"
+    ],
+    keg: [
+      "Overhaul entire beverage section",
+      "R&D for fall menu",
+      "Re-paint bar front"
+    ]
+  };
+
+  let idCounter = 0;
+  function nextId() { return 'task-' + (idCounter++); }
+
+  const STORAGE_KEY = 'barTaskBoardState';
+
+  function saveState() {
+    const state = {};
+    document.querySelectorAll('.cards').forEach(list => {
+      state[list.dataset.list] = [...list.children].map(card => ({
+        text: card.querySelector('.label').textContent,
+        date: card.querySelector('.date').textContent || null
+      }));
+    });
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function todayLabel() {
+    return new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function createCard(text, dateLabel) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.draggable = true;
+    card.id = nextId();
+    card.innerHTML =
+      '<span class="grip">::</span>' +
+      '<span class="label-wrap"><span class="label"></span><span class="date"></span></span>' +
+      '<button class="action" aria-label="Mark done or remove">' +
+        '<span class="icon-check">&check;</span><span class="icon-trash">&times;</span>' +
+      '</button>';
+    card.querySelector('.label').textContent = text;
+    if (dateLabel) card.querySelector('.date').textContent = 'Completed ' + dateLabel;
+
+    card.addEventListener('dragstart', () => {
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      updateCounts();
+    });
+
+    card.querySelector('.action').addEventListener('click', () => {
+      const currentCol = card.closest('.column').dataset.col;
+      if (currentCol === 'cellar') {
+        card.remove();
+      } else {
+        card.querySelector('.date').textContent = 'Completed ' + todayLabel();
+        document.querySelector('[data-list="cellar"]').prepend(card);
+      }
+      updateCounts();
+      saveState();
+    });
+
+    return card;
+  }
+
+  function updateCounts() {
+    document.querySelectorAll('.cards').forEach(list => {
+      const col = list.dataset.list;
+      const countEl = document.querySelector('[data-count="' + col + '"]');
+      countEl.textContent = list.children.length;
+    });
+    const cellarList = document.querySelector('[data-list="cellar"]');
+    const hint = document.querySelector('[data-hint="cellar"]');
+    hint.classList.toggle('visible', cellarList.children.length === 0);
+  }
+
+  // seed cards: from saved state if present, otherwise the defaults
+  const savedState = loadState();
+  const dataToLoad = savedState || initialData;
+  Object.keys(dataToLoad).forEach(col => {
+    const list = document.querySelector('[data-list="' + col + '"]');
+    if (!list) return;
+    dataToLoad[col].forEach(item => {
+      if (typeof item === 'string') {
+        list.appendChild(createCard(item));
+      } else {
+        list.appendChild(createCard(item.text, item.date ? item.date.replace('Completed ', '') : null));
+      }
+    });
+  });
+  updateCounts();
+  if (!savedState) saveState();
+
+  // drag and drop wiring per column
+  document.querySelectorAll('.column').forEach(column => {
+    const list = column.querySelector('.cards');
+
+    column.addEventListener('dragover', e => {
+      e.preventDefault();
+      column.classList.add('drag-over');
+      const dragging = document.querySelector('.dragging');
+      if (!dragging) return;
+      const afterEl = getDragAfterElement(list, e.clientY);
+      if (afterEl == null) {
+        list.appendChild(dragging);
+      } else {
+        list.insertBefore(dragging, afterEl);
+      }
+    });
+
+    column.addEventListener('dragleave', e => {
+      if (!column.contains(e.relatedTarget)) {
+        column.classList.remove('drag-over');
+      }
+    });
+
+    column.addEventListener('drop', e => {
+      e.preventDefault();
+      column.classList.remove('drag-over');
+      updateCounts();
+      saveState();
+    });
+  });
+
+  function getDragAfterElement(container, y) {
+    const cards = [...container.querySelectorAll('.card:not(.dragging)')];
+    return cards.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    }, { offset: -Infinity }).element;
+  }
+
+  // add new task inputs
+  document.querySelectorAll('[data-add]').forEach(btn => {
+    const col = btn.dataset.add;
+    const input = document.querySelector('[data-input="' + col + '"]');
+    const list = document.querySelector('[data-list="' + col + '"]');
+
+    function addTask() {
+      const val = input.value.trim();
+      if (!val) return;
+      list.appendChild(createCard(val));
+      input.value = '';
+      updateCounts();
+      saveState();
+    }
+
+    btn.addEventListener('click', addTask);
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') addTask();
+    });
+  });
+</script>
+
+</body>
+</html>
