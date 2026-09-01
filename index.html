@@ -282,96 +282,620 @@
     font-style: italic;
     padding: 4px 2px;
   }
+
+  /* --- app shell / tabs / pages --- */
+  .app-shell {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .tabbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .tab {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(212,175,106,0.25);
+    color: var(--chalk-dim);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .tab.active {
+    background: var(--copper);
+    color: var(--chalk);
+    border-color: var(--copper);
+  }
+
+  .pages-viewport {
+    position: relative;
+    touch-action: pan-y;
+  }
+
+  .page { display: none; }
+  .page.active {
+    display: block;
+    animation: pageIn 0.22s ease;
+  }
+
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateX(14px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* --- employee notes page --- */
+  .notes-header { text-align: center; margin-bottom: 22px; }
+  .notes-header .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brass);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .notes-header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    margin: 0;
+    color: var(--chalk);
+  }
+  .notes-header p {
+    font-size: 13px;
+    color: var(--chalk-dim);
+    margin: 8px 0 0;
+  }
+
+  .staff-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .staff-card {
+    background: var(--bg-panel);
+    border: 1px solid rgba(212,175,106,0.18);
+    border-left: 3px solid var(--brass);
+    border-radius: 8px;
+    padding: 13px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    color: var(--chalk);
+    text-align: left;
+    width: 100%;
+  }
+
+  .staff-card.has-open { border-left-color: var(--danger); }
+  .staff-name { font-weight: 600; font-size: 15px; }
+  .staff-meta { font-size: 12px; color: var(--chalk-dim); }
+
+  .notes-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--brass);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 6px 4px;
+  }
+  .notes-detail-header h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    color: var(--chalk);
+    margin: 0;
+  }
+
+  .notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .note-row {
+    background: var(--card-bg);
+    border-radius: 7px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--danger);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .note-row.addressed {
+    border-left-color: var(--chalk-dim);
+    opacity: 0.78;
+  }
+
+  .note-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .note-text {
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .note-row.addressed .note-text {
+    text-decoration: line-through;
+    color: var(--text-dim);
+  }
+
+  .note-date {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .note-actions { display: flex; gap: 2px; }
+
+  .note-toggle, .note-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: var(--text-dim);
+  }
+
+  .note-toggle:hover { color: var(--copper); background: rgba(193,84,61,0.08); }
+  .note-row.addressed .note-toggle { color: var(--brass); }
+  .note-delete:hover { color: var(--danger); background: rgba(193,84,61,0.1); }
+
+  /* --- structured notes: category, dates, copy --- */
+  .copy-btn {
+    margin-left: auto;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,175,106,0.3);
+    color: var(--brass);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .copy-btn:hover { background: rgba(212,175,106,0.15); }
+
+  .note-row { flex-direction: column; align-items: stretch; gap: 6px; }
+  .note-top { display: flex; justify-content: space-between; align-items: flex-start; }
+
+  .note-cat {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-block;
+    background: #33302A;
+    color: #C9C2B4;
+  }
+  .note-cat[data-cat="Positive"] { background: #24382B; color: #9FDDB0; }
+  .note-cat[data-cat="Behavior"] { background: #3C2626; color: #E4A7A7; }
+  .note-cat[data-cat="Attendance"] { background: #3C3226; color: #E4C6A7; }
+  .note-cat[data-cat="Performance"] { background: #24303C; color: #A7C6E4; }
+  .note-cat[data-cat="Policy"] { background: #302439; color: #C6A7E4; }
+
+  .note-row .note-text { font-size: 14px; }
+
+  .note-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .note-date-edit {
+    background: rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 5px;
+    padding: 3px 5px;
+    font-size: 11px;
+    color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .note-logged {
+    font-size: 10.5px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  .note-meta .note-toggle { margin-left: auto; }
+
+  .note-add-form {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .note-add-form textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,175,106,0.3);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--chalk);
+    font-family: 'Inter', sans-serif;
+    resize: vertical;
+  }
+  .note-add-form textarea::placeholder { color: var(--chalk-dim); }
+  .note-add-form textarea:focus { outline: none; border-color: var(--brass); }
+
+  .note-add-row2 {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .note-add-row2 select,
+  .note-add-row2 input[type="date"] {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,175,106,0.3);
+    border-radius: 6px;
+    padding: 7px 8px;
+    font-size: 12.5px;
+    color: var(--chalk);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .note-add-row2 button {
+    background: var(--copper);
+    color: var(--chalk);
+    border: none;
+    border-radius: 6px;
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  .note-add-row2 button:hover { background: var(--brass); color: var(--bg-deep); }
+
+  /* --- duties page --- */
+  .duty-add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 22px;
+    background: var(--bg-panel);
+    border: 1px solid rgba(212,175,106,0.18);
+    border-radius: 10px;
+    padding: 12px;
+  }
+
+  .duty-add-form > input[type="text"] {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,175,106,0.3);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--chalk);
+    font-family: 'Inter', sans-serif;
+  }
+  .duty-add-form > input[type="text"]::placeholder { color: var(--chalk-dim); }
+
+  .duty-add-row2 {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .duty-add-row2 input[type="number"] {
+    width: 52px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,175,106,0.3);
+    border-radius: 6px;
+    padding: 7px 6px;
+    font-size: 13px;
+    color: var(--chalk);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .duty-add-row2 select,
+  .duty-add-row2 input[type="date"] {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,175,106,0.3);
+    border-radius: 6px;
+    padding: 7px 8px;
+    font-size: 12.5px;
+    color: var(--chalk);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .duty-add-row2 button {
+    background: var(--copper);
+    color: var(--chalk);
+    border: none;
+    border-radius: 6px;
+    padding: 0 16px;
+    height: 32px;
+    font-size: 17px;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  .duty-add-row2 button:hover { background: var(--brass); color: var(--bg-deep); }
+
+  .duty-group { margin-bottom: 18px; }
+  .duty-group-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 8px;
+  }
+
+  .duty-row {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--brass);
+  }
+
+  .duty-row.overdue { border-left-color: var(--danger); }
+  .duty-row.done { border-left-color: var(--chalk-dim); opacity: 0.75; }
+
+  .duty-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 2px solid var(--copper);
+    background: transparent;
+    color: transparent;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .duty-row.done .duty-check {
+    background: var(--brass);
+    border-color: var(--brass);
+    color: var(--bg-deep);
+  }
+
+  .duty-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dark);
+    flex: 1 1 140px;
+    min-width: 100px;
+  }
+  .duty-row.done .duty-name { text-decoration: line-through; color: var(--text-dim); }
+
+  .duty-status {
+    font-size: 11px;
+    color: var(--text-dim);
+    flex-basis: 100%;
+  }
+  .duty-row.overdue .duty-status { color: var(--danger); font-weight: 600; }
+
+  .duty-date-edit {
+    background: rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 5px;
+    padding: 3px 5px;
+    font-size: 11px;
+    color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .duty-delete {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 15px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-left: auto;
+  }
+  .duty-delete:hover { color: var(--danger); background: rgba(193,84,61,0.1); }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="eyebrow">The list that never ends</div>
-  <h1>Bar task board</h1>
-  <p>Drag tasks between columns as their scope changes. Add new ones as they come up.</p>
-</header>
+<div class="app-shell">
 
-<div class="board" id="board">
-
-  <div class="column" data-col="shot">
-    <div class="col-head">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-        <path d="M8 3H16L15 15C15 16.6569 13.6569 18 12 18C10.3431 18 9 16.6569 9 15L8 3Z" stroke="#D4AF6A" stroke-width="1.5" stroke-linejoin="round"/>
-        <line x1="7" y1="3" x2="17" y2="3" stroke="#D4AF6A" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="9.4" y1="10" x2="14.6" y2="10" stroke="#D4AF6A" stroke-width="1.2"/>
-      </svg>
-      <div class="col-titles">
-        <h2>Shot</h2>
-        <div class="sub">Quick hits &middot; under an hour</div>
-      </div>
-      <div class="count" data-count="shot">0</div>
-    </div>
-    <div class="cards" data-list="shot"></div>
-    <div class="add-row">
-      <input type="text" placeholder="Add a quick task..." data-input="shot">
-      <button data-add="shot">+</button>
-    </div>
+  <div class="tabbar">
+    <button class="tab" data-tab="0">Board</button>
+    <button class="tab" data-tab="1">Employee Notes</button>
+    <button class="tab" data-tab="2">Duties</button>
   </div>
 
-  <div class="column" data-col="pint">
-    <div class="col-head">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-        <path d="M6 3H18L16.8 19C16.7 20.1 15.8 21 14.6 21H9.4C8.2 21 7.3 20.1 7.2 19L6 3Z" stroke="#D4AF6A" stroke-width="1.5" stroke-linejoin="round"/>
-        <line x1="5" y1="3" x2="19" y2="3" stroke="#D4AF6A" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M7 8H17" stroke="#D4AF6A" stroke-width="1.2"/>
-      </svg>
-      <div class="col-titles">
-        <h2>Pint</h2>
-        <div class="sub">Half-day projects</div>
-      </div>
-      <div class="count" data-count="pint">0</div>
-    </div>
-    <div class="cards" data-list="pint"></div>
-    <div class="add-row">
-      <input type="text" placeholder="Add a half-day project..." data-input="pint">
-      <button data-add="pint">+</button>
-    </div>
-  </div>
+  <div class="pages-viewport" id="pagesViewport">
 
-  <div class="column" data-col="keg">
-    <div class="col-head">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-        <rect x="5" y="5" width="14" height="16" rx="2" stroke="#D4AF6A" stroke-width="1.5"/>
-        <line x1="5" y1="10" x2="19" y2="10" stroke="#D4AF6A" stroke-width="1.2"/>
-        <line x1="5" y1="16" x2="19" y2="16" stroke="#D4AF6A" stroke-width="1.2"/>
-        <rect x="10" y="2" width="4" height="3" rx="0.5" stroke="#D4AF6A" stroke-width="1.5"/>
-      </svg>
-      <div class="col-titles">
-        <h2>Keg</h2>
-        <div class="sub">Big undertakings</div>
-      </div>
-      <div class="count" data-count="keg">0</div>
-    </div>
-    <div class="cards" data-list="keg"></div>
-    <div class="add-row">
-      <input type="text" placeholder="Add a big project..." data-input="keg">
-      <button data-add="keg">+</button>
-    </div>
-  </div>
+    <div class="page" id="page-board">
+      <header>
+        <div class="eyebrow">The list that never ends</div>
+        <h1>Bar task board</h1>
+        <p>Drag tasks between columns as their scope changes. Add new ones as they come up.</p>
+      </header>
 
-  <div class="column column-cellar" data-col="cellar">
-    <div class="col-head">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-        <rect x="4" y="4" width="16" height="4" rx="1" stroke="#A9B8AC" stroke-width="1.5"/>
-        <rect x="4" y="10" width="16" height="4" rx="1" stroke="#A9B8AC" stroke-width="1.5"/>
-        <rect x="4" y="16" width="16" height="4" rx="1" stroke="#A9B8AC" stroke-width="1.5"/>
-      </svg>
-      <div class="col-titles">
-        <h2>Cellar</h2>
-        <div class="sub">Done &middot; logged for the record</div>
-      </div>
-      <div class="count" data-count="cellar">0</div>
-    </div>
-    <div class="cards" data-list="cellar"></div>
-    <div class="empty-hint" data-hint="cellar">Finished tasks land here, dated.</div>
-  </div>
+      <div class="board" id="board">
 
+        <div class="column" data-col="shot">
+          <div class="col-head">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M8 3H16L15 15C15 16.6569 13.6569 18 12 18C10.3431 18 9 16.6569 9 15L8 3Z" stroke="#D4AF6A" stroke-width="1.5" stroke-linejoin="round"/>
+              <line x1="7" y1="3" x2="17" y2="3" stroke="#D4AF6A" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="9.4" y1="10" x2="14.6" y2="10" stroke="#D4AF6A" stroke-width="1.2"/>
+            </svg>
+            <div class="col-titles">
+              <h2>Shot</h2>
+              <div class="sub">Quick hits &middot; under an hour</div>
+            </div>
+            <div class="count" data-count="shot">0</div>
+          </div>
+          <div class="cards" data-list="shot"></div>
+          <div class="add-row">
+            <input type="text" placeholder="Add a quick task..." data-input="shot">
+            <button data-add="shot">+</button>
+          </div>
+        </div>
+
+        <div class="column" data-col="pint">
+          <div class="col-head">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M6 3H18L16.8 19C16.7 20.1 15.8 21 14.6 21H9.4C8.2 21 7.3 20.1 7.2 19L6 3Z" stroke="#D4AF6A" stroke-width="1.5" stroke-linejoin="round"/>
+              <line x1="5" y1="3" x2="19" y2="3" stroke="#D4AF6A" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M7 8H17" stroke="#D4AF6A" stroke-width="1.2"/>
+            </svg>
+            <div class="col-titles">
+              <h2>Pint</h2>
+              <div class="sub">Half-day projects</div>
+            </div>
+            <div class="count" data-count="pint">0</div>
+          </div>
+          <div class="cards" data-list="pint"></div>
+          <div class="add-row">
+            <input type="text" placeholder="Add a half-day project..." data-input="pint">
+            <button data-add="pint">+</button>
+          </div>
+        </div>
+
+        <div class="column" data-col="keg">
+          <div class="col-head">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <rect x="5" y="5" width="14" height="16" rx="2" stroke="#D4AF6A" stroke-width="1.5"/>
+              <line x1="5" y1="10" x2="19" y2="10" stroke="#D4AF6A" stroke-width="1.2"/>
+              <line x1="5" y1="16" x2="19" y2="16" stroke="#D4AF6A" stroke-width="1.2"/>
+              <rect x="10" y="2" width="4" height="3" rx="0.5" stroke="#D4AF6A" stroke-width="1.5"/>
+            </svg>
+            <div class="col-titles">
+              <h2>Keg</h2>
+              <div class="sub">Big undertakings</div>
+            </div>
+            <div class="count" data-count="keg">0</div>
+          </div>
+          <div class="cards" data-list="keg"></div>
+          <div class="add-row">
+            <input type="text" placeholder="Add a big project..." data-input="keg">
+            <button data-add="keg">+</button>
+          </div>
+        </div>
+
+        <div class="column column-cellar" data-col="cellar">
+          <div class="col-head">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="4" width="16" height="4" rx="1" stroke="#A9B8AC" stroke-width="1.5"/>
+              <rect x="4" y="10" width="16" height="4" rx="1" stroke="#A9B8AC" stroke-width="1.5"/>
+              <rect x="4" y="16" width="16" height="4" rx="1" stroke="#A9B8AC" stroke-width="1.5"/>
+            </svg>
+            <div class="col-titles">
+              <h2>Cellar</h2>
+              <div class="sub">Done &middot; logged for the record</div>
+            </div>
+            <div class="count" data-count="cellar">0</div>
+          </div>
+          <div class="cards" data-list="cellar"></div>
+          <div class="empty-hint" data-hint="cellar">Finished tasks land here, dated.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="page" id="page-notes">
+      <div class="notes-page">
+
+        <div id="staffListView">
+          <header class="notes-header">
+            <div class="eyebrow">Keep it on record</div>
+            <h1>Employee notes</h1>
+            <p>Tap a name to view or log a note.</p>
+          </header>
+          <div class="staff-cards" id="staffCards"></div>
+          <div class="add-row">
+            <input type="text" placeholder="Add a staff member..." id="addStaffInput">
+            <button id="addStaffBtn">+</button>
+          </div>
+        </div>
+
+        <div id="staffDetailView" hidden>
+          <div class="notes-detail-header">
+            <button class="back-btn" id="backToStaff">&larr; Staff</button>
+            <h2 id="detailStaffName"></h2>
+            <button class="copy-btn" id="copyLogBtn">Copy log</button>
+          </div>
+          <div class="notes-list" id="notesList"></div>
+          <div class="note-add-form">
+            <textarea id="addNoteText" placeholder="What happened..." rows="2"></textarea>
+            <div class="note-add-row2">
+              <select id="addNoteCategory">
+                <option value="Behavior">Behavior</option>
+                <option value="Attendance">Attendance</option>
+                <option value="Performance">Performance</option>
+                <option value="Policy">Policy</option>
+                <option value="Positive">Positive</option>
+                <option value="Other">Other</option>
+              </select>
+              <input type="date" id="addNoteDate">
+              <button id="addNoteBtn">+ Add</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="page" id="page-duties">
+      <header class="notes-header">
+        <div class="eyebrow">Stay on schedule</div>
+        <h1>Duties</h1>
+        <p>Check off what's done. Each one resets on its own once the period is up &mdash; edit due dates any time.</p>
+      </header>
+
+      <div class="duty-add-form">
+        <input type="text" id="dutyNameInput" placeholder="Duty name...">
+        <div class="duty-add-row2">
+          <input type="number" id="dutyCountInput" min="1" value="1">
+          <select id="dutyUnitInput">
+            <option value="day">Day(s)</option>
+            <option value="week" selected>Week(s)</option>
+            <option value="month">Month(s)</option>
+          </select>
+          <input type="date" id="dutyDueInput">
+          <button id="addDutyBtn">+</button>
+        </div>
+      </div>
+
+      <div id="dutyGroups"></div>
+    </div>
+
+  </div>
 </div>
 
 <script>
@@ -425,6 +949,31 @@
 
   function todayLabel() {
     return new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function toISODateString(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
+  function todayISO() {
+    return toISODateString(new Date());
+  }
+
+  function formatDateDisplay(iso) {
+    if (!iso) return '';
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function advanceDate(iso, unit, count) {
+    const d = new Date(iso + 'T00:00:00');
+    if (unit === 'day') d.setDate(d.getDate() + count);
+    else if (unit === 'week') d.setDate(d.getDate() + count * 7);
+    else if (unit === 'month') d.setMonth(d.getMonth() + count);
+    return toISODateString(d);
   }
 
   function createCard(text, dateLabel) {
@@ -494,6 +1043,7 @@
     grip.addEventListener('pointerdown', e => {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       e.preventDefault();
+      e.stopPropagation();
       startDrag(card, e);
     });
   }
@@ -599,6 +1149,390 @@
       if (e.key === 'Enter') addTask();
     });
   });
+
+  // ---------- Employee Notes ----------
+  const NOTES_KEY = 'barEmployeeNotesState';
+  let notesState = loadNotesState() || { staff: [] };
+  let currentStaffId = null;
+
+  // migrate any notes saved before categories / structured dates existed
+  notesState.staff.forEach(person => {
+    person.notes.forEach(note => {
+      if (!note.category) note.category = 'Other';
+      if (!note.incidentDate) note.incidentDate = note.date ? isoFromLegacyLabel(note.date) : todayISO();
+      if (!note.loggedDate) note.loggedDate = note.incidentDate;
+    });
+  });
+
+  function isoFromLegacyLabel(label) {
+    const d = new Date(label);
+    return isNaN(d) ? todayISO() : toISODateString(d);
+  }
+
+  function loadNotesState() {
+    try {
+      const raw = localStorage.getItem(NOTES_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveNotesState() {
+    try {
+      localStorage.setItem(NOTES_KEY, JSON.stringify(notesState));
+    } catch (e) {}
+  }
+
+  function uid(prefix) {
+    return prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
+  }
+
+  function renderStaffList() {
+    const container = document.getElementById('staffCards');
+    container.innerHTML = '';
+    if (notesState.staff.length === 0) {
+      const hint = document.createElement('div');
+      hint.className = 'empty-hint';
+      hint.textContent = 'Add your first staff member below.';
+      container.appendChild(hint);
+      return;
+    }
+    notesState.staff.forEach(person => {
+      const unresolved = person.notes.filter(n => !n.addressed).length;
+      const total = person.notes.length;
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'staff-card' + (unresolved > 0 ? ' has-open' : '');
+      card.innerHTML = '<span class="staff-name"></span><span class="staff-meta"></span>';
+      card.querySelector('.staff-name').textContent = person.name;
+      card.querySelector('.staff-meta').textContent =
+        total === 0 ? 'No notes yet' : (unresolved > 0 ? unresolved + ' to address' : total + ' logged');
+      card.addEventListener('click', () => openStaffDetail(person.id));
+      container.appendChild(card);
+    });
+  }
+
+  function openStaffDetail(staffId) {
+    currentStaffId = staffId;
+    const person = notesState.staff.find(p => p.id === staffId);
+    if (!person) return;
+    document.getElementById('staffListView').hidden = true;
+    document.getElementById('staffDetailView').hidden = false;
+    document.getElementById('detailStaffName').textContent = person.name;
+    document.getElementById('addNoteDate').value = todayISO();
+    renderNotesList();
+  }
+
+  function renderNotesList() {
+    const person = notesState.staff.find(p => p.id === currentStaffId);
+    const list = document.getElementById('notesList');
+    list.innerHTML = '';
+    if (!person || person.notes.length === 0) {
+      const hint = document.createElement('div');
+      hint.className = 'empty-hint';
+      hint.textContent = 'No notes yet.';
+      list.appendChild(hint);
+      return;
+    }
+    [...person.notes]
+      .sort((a, b) => b.incidentDate.localeCompare(a.incidentDate))
+      .forEach(note => {
+        const row = document.createElement('div');
+        row.className = 'note-row' + (note.addressed ? ' addressed' : '');
+        row.innerHTML =
+          '<div class="note-top">' +
+            '<span class="note-cat" data-cat="' + note.category + '"></span>' +
+            '<button class="note-delete" aria-label="Delete note">&times;</button>' +
+          '</div>' +
+          '<span class="note-text"></span>' +
+          '<div class="note-meta">' +
+            '<input type="date" class="note-date-edit">' +
+            '<span class="note-logged"></span>' +
+            '<button class="note-toggle" aria-label="Toggle addressed">&check;</button>' +
+          '</div>';
+        row.querySelector('.note-cat').textContent = note.category;
+        row.querySelector('.note-text').textContent = note.text;
+        row.querySelector('.note-date-edit').value = note.incidentDate;
+        row.querySelector('.note-logged').textContent = 'Logged ' + formatDateDisplay(note.loggedDate);
+        row.querySelector('.note-date-edit').addEventListener('change', e => {
+          note.incidentDate = e.target.value || todayISO();
+          saveNotesState();
+          renderNotesList();
+        });
+        row.querySelector('.note-toggle').addEventListener('click', () => {
+          note.addressed = !note.addressed;
+          saveNotesState();
+          renderNotesList();
+          renderStaffList();
+        });
+        row.querySelector('.note-delete').addEventListener('click', () => {
+          person.notes = person.notes.filter(n => n.id !== note.id);
+          saveNotesState();
+          renderNotesList();
+          renderStaffList();
+        });
+        list.appendChild(row);
+      });
+  }
+
+  document.getElementById('addStaffBtn').addEventListener('click', addStaff);
+  document.getElementById('addStaffInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addStaff();
+  });
+  function addStaff() {
+    const input = document.getElementById('addStaffInput');
+    const val = input.value.trim();
+    if (!val) return;
+    notesState.staff.push({ id: uid('staff'), name: val, notes: [] });
+    input.value = '';
+    saveNotesState();
+    renderStaffList();
+  }
+
+  document.getElementById('addNoteBtn').addEventListener('click', addNote);
+  function addNote() {
+    const textEl = document.getElementById('addNoteText');
+    const val = textEl.value.trim();
+    if (!val || !currentStaffId) return;
+    const person = notesState.staff.find(p => p.id === currentStaffId);
+    if (!person) return;
+    const category = document.getElementById('addNoteCategory').value;
+    const incidentDate = document.getElementById('addNoteDate').value || todayISO();
+    person.notes.push({
+      id: uid('note'),
+      text: val,
+      category: category,
+      incidentDate: incidentDate,
+      loggedDate: todayISO(),
+      addressed: false
+    });
+    textEl.value = '';
+    document.getElementById('addNoteDate').value = todayISO();
+    saveNotesState();
+    renderNotesList();
+    renderStaffList();
+  }
+
+  document.getElementById('copyLogBtn').addEventListener('click', () => {
+    const person = notesState.staff.find(p => p.id === currentStaffId);
+    if (!person) return;
+    const lines = [...person.notes]
+      .sort((a, b) => a.incidentDate.localeCompare(b.incidentDate))
+      .map(n => '[' + n.incidentDate + '] (' + n.category + (n.addressed ? ', addressed' : '') + ') ' + n.text);
+    const text = person.name + ' \u2014 note log\n' + (lines.length ? lines.join('\n') : 'No notes logged.');
+    const btn = document.getElementById('copyLogBtn');
+    const original = btn.textContent;
+    const flash = label => { btn.textContent = label; setTimeout(() => { btn.textContent = original; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => flash('Copied!')).catch(() => flash('Copy failed'));
+    } else {
+      flash('Copy unsupported');
+    }
+  });
+
+  document.getElementById('backToStaff').addEventListener('click', () => {
+    document.getElementById('staffDetailView').hidden = true;
+    document.getElementById('staffListView').hidden = false;
+    currentStaffId = null;
+    renderStaffList();
+  });
+
+  renderStaffList();
+
+  // ---------- Duties ----------
+  const DUTIES_KEY = 'barDutiesState';
+  const dutySeed = [
+    { name: 'Check manager logs', unit: 'day', count: 1 },
+    { name: 'Vendor orders', unit: 'week', count: 1 },
+    { name: 'Clean beer lines', unit: 'month', count: 1 },
+    { name: 'Deep clean beer lines', unit: 'month', count: 4 }
+  ];
+
+  function loadDutiesState() {
+    try {
+      const raw = localStorage.getItem(DUTIES_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveDutiesState() {
+    try {
+      localStorage.setItem(DUTIES_KEY, JSON.stringify(dutiesState));
+    } catch (e) {}
+  }
+
+  let dutiesState = loadDutiesState();
+  if (!dutiesState) {
+    dutiesState = {
+      duties: dutySeed.map(d => ({
+        id: uid('duty'),
+        name: d.name,
+        unit: d.unit,
+        count: d.count,
+        dueDate: todayISO(),
+        checked: false
+      }))
+    };
+    saveDutiesState();
+  }
+
+  function cadenceLabel(unit, count) {
+    if (count === 1) {
+      if (unit === 'day') return 'Daily';
+      if (unit === 'week') return 'Weekly';
+      if (unit === 'month') return 'Monthly';
+    }
+    const noun = unit + (count > 1 ? 's' : '');
+    return 'Every ' + count + ' ' + noun;
+  }
+
+  function cadenceApproxDays(unit, count) {
+    if (unit === 'day') return count;
+    if (unit === 'week') return count * 7;
+    return count * 30;
+  }
+
+  function rollOverDuty(duty) {
+    if (duty.checked && todayISO() > duty.dueDate) {
+      duty.dueDate = advanceDate(duty.dueDate, duty.unit, duty.count);
+      duty.checked = false;
+    }
+  }
+
+  function renderDuties() {
+    dutiesState.duties.forEach(rollOverDuty);
+    saveDutiesState();
+
+    const container = document.getElementById('dutyGroups');
+    container.innerHTML = '';
+
+    if (dutiesState.duties.length === 0) {
+      const hint = document.createElement('div');
+      hint.className = 'empty-hint';
+      hint.textContent = 'Add your first recurring duty below.';
+      container.appendChild(hint);
+      return;
+    }
+
+    const groups = {};
+    dutiesState.duties.forEach(duty => {
+      const label = cadenceLabel(duty.unit, duty.count);
+      if (!groups[label]) groups[label] = { approxDays: cadenceApproxDays(duty.unit, duty.count), duties: [] };
+      groups[label].duties.push(duty);
+    });
+
+    Object.keys(groups)
+      .sort((a, b) => groups[a].approxDays - groups[b].approxDays)
+      .forEach(label => {
+        const groupEl = document.createElement('div');
+        groupEl.className = 'duty-group';
+        const title = document.createElement('div');
+        title.className = 'duty-group-title';
+        title.textContent = label;
+        groupEl.appendChild(title);
+
+        groups[label].duties.forEach(duty => {
+          const overdue = !duty.checked && todayISO() > duty.dueDate;
+          const row = document.createElement('div');
+          row.className = 'duty-row' + (duty.checked ? ' done' : '') + (overdue ? ' overdue' : '');
+          row.innerHTML =
+            '<button class="duty-check" aria-label="Mark done">&check;</button>' +
+            '<span class="duty-name"></span>' +
+            '<button class="duty-delete" aria-label="Delete duty">&times;</button>' +
+            '<span class="duty-status"></span>' +
+            '<input type="date" class="duty-date-edit">';
+          row.querySelector('.duty-name').textContent = duty.name;
+          row.querySelector('.duty-date-edit').value = duty.dueDate;
+          row.querySelector('.duty-status').textContent = duty.checked
+            ? 'Done \u00b7 resets ' + formatDateDisplay(duty.dueDate)
+            : (overdue ? 'Overdue since ' + formatDateDisplay(duty.dueDate) : 'Due ' + formatDateDisplay(duty.dueDate));
+
+          row.querySelector('.duty-check').addEventListener('click', () => {
+            duty.checked = !duty.checked;
+            rollOverDuty(duty);
+            saveDutiesState();
+            renderDuties();
+          });
+          row.querySelector('.duty-date-edit').addEventListener('change', e => {
+            duty.dueDate = e.target.value || todayISO();
+            saveDutiesState();
+            renderDuties();
+          });
+          row.querySelector('.duty-delete').addEventListener('click', () => {
+            dutiesState.duties = dutiesState.duties.filter(d => d.id !== duty.id);
+            saveDutiesState();
+            renderDuties();
+          });
+
+          groupEl.appendChild(row);
+        });
+
+        container.appendChild(groupEl);
+      });
+  }
+
+  document.getElementById('addDutyBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('dutyNameInput');
+    const name = nameInput.value.trim();
+    if (!name) return;
+    const count = Math.max(1, parseInt(document.getElementById('dutyCountInput').value, 10) || 1);
+    const unit = document.getElementById('dutyUnitInput').value;
+    const dueInput = document.getElementById('dutyDueInput');
+    const dueDate = dueInput.value || todayISO();
+    dutiesState.duties.push({ id: uid('duty'), name: name, unit: unit, count: count, dueDate: dueDate, checked: false });
+    nameInput.value = '';
+    document.getElementById('dutyCountInput').value = 1;
+    dueInput.value = '';
+    saveDutiesState();
+    renderDuties();
+  });
+
+  document.getElementById('dutyDueInput').value = todayISO();
+  renderDuties();
+
+  // ---------- page switching: tabs + swipe ----------
+  const pageIds = ['page-board', 'page-notes', 'page-duties'];
+  let currentPageIndex = 0;
+
+  function showPage(index) {
+    currentPageIndex = index;
+    pageIds.forEach((id, i) => {
+      document.getElementById(id).classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.tab').forEach((tab, i) => {
+      tab.classList.toggle('active', i === index);
+    });
+    if (index === 2) renderDuties();
+  }
+
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => showPage(parseInt(tab.dataset.tab, 10)));
+  });
+
+  const viewport = document.getElementById('pagesViewport');
+  let swipeStartX = 0, swipeStartY = 0, swiping = false;
+
+  viewport.addEventListener('pointerdown', e => {
+    swipeStartX = e.clientX;
+    swipeStartY = e.clientY;
+    swiping = true;
+  });
+  viewport.addEventListener('pointerup', e => {
+    if (!swiping) return;
+    swiping = false;
+    const dx = e.clientX - swipeStartX;
+    const dy = e.clientY - swipeStartY;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0 && currentPageIndex < pageIds.length - 1) showPage(currentPageIndex + 1);
+      else if (dx > 0 && currentPageIndex > 0) showPage(currentPageIndex - 1);
+    }
+  });
+  viewport.addEventListener('pointercancel', () => { swiping = false; });
+
+  showPage(0);
 </script>
 
 </body>
