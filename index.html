@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="Bar Tasks">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg-deep: #16241C;
@@ -27,6 +27,8 @@
     --text-dark: #2A2118;
     --text-dim: #6B6152;
     --danger: #C1543D;
+    --good: #5B9A6F;
+    --bad: #C1543D;
   }
 
   * { box-sizing: border-box; }
@@ -36,9 +38,9 @@
     background: var(--bg-deep);
     background-image:
       repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
-    font-family: 'Inter', -apple-system, sans-serif;
+    font-family: 'Manrope', -apple-system, sans-serif;
     color: var(--chalk);
-    padding: 28px 20px 60px;
+    padding: calc(36px + env(safe-area-inset-top)) 20px 60px;
     min-height: 100vh;
   }
 
@@ -48,7 +50,7 @@
   }
 
   header .eyebrow {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
     font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -58,7 +60,7 @@
   }
 
   header h1 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 600;
     font-size: 30px;
     letter-spacing: 0.02em;
@@ -113,7 +115,7 @@
   .col-titles { flex: 1; min-width: 0; }
 
   .col-titles h2 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 600;
     font-size: 17px;
     letter-spacing: 0.03em;
@@ -128,7 +130,7 @@
   }
 
   .count {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Bricolage Grotesque', sans-serif;
     font-size: 13px;
     font-weight: 600;
     color: var(--bg-deep);
@@ -256,7 +258,7 @@
     padding: 8px 10px;
     font-size: 13px;
     color: var(--chalk);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
   }
 
   .add-row input::placeholder { color: var(--chalk-dim); }
@@ -300,7 +302,7 @@
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(212,175,106,0.25);
     color: var(--chalk-dim);
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 600;
     letter-spacing: 0.03em;
     font-size: 13px;
@@ -314,6 +316,63 @@
     color: var(--chalk);
     border-color: var(--copper);
   }
+
+  .page-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 4px;
+  }
+
+  .undo-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(212,175,106,0.3);
+    color: var(--brass);
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .undo-btn:hover:not(:disabled) { background: rgba(212,175,106,0.15); }
+  .undo-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .type-toggle {
+    display: flex;
+    border: 1px solid rgba(212,175,106,0.3);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .type-btn {
+    background: rgba(255,255,255,0.06);
+    border: none;
+    color: var(--chalk-dim);
+    font-family: 'Manrope', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 7px 10px;
+    cursor: pointer;
+  }
+  .type-btn[data-type="good"].active { background: var(--good); color: #10231A; }
+  .type-btn[data-type="bad"].active { background: var(--bad); color: #2A120C; }
+
+  .note-filters {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .filter-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(212,175,106,0.25);
+    color: var(--chalk-dim);
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  .filter-btn.active { background: var(--brass); color: var(--bg-deep); border-color: var(--brass); }
 
   .pages-viewport {
     position: relative;
@@ -342,7 +401,7 @@
     margin-bottom: 6px;
   }
   .notes-header h1 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 600;
     font-size: 26px;
     margin: 0;
@@ -370,7 +429,7 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
     color: var(--chalk);
     text-align: left;
     width: 100%;
@@ -390,13 +449,13 @@
     background: none;
     border: none;
     color: var(--brass);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
     font-size: 14px;
     cursor: pointer;
     padding: 6px 4px;
   }
   .notes-detail-header h2 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Bricolage Grotesque', sans-serif;
     font-size: 20px;
     color: var(--chalk);
     margin: 0;
@@ -471,7 +530,7 @@
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(212,175,106,0.3);
     color: var(--brass);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
     font-size: 12px;
     font-weight: 600;
     padding: 6px 10px;
@@ -482,7 +541,8 @@
   .copy-btn:hover { background: rgba(212,175,106,0.15); }
 
   .note-row { flex-direction: column; align-items: stretch; gap: 6px; }
-  .note-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .note-top { display: flex; justify-content: flex-start; align-items: center; gap: 6px; }
+  .note-top .note-delete { margin-left: auto; }
 
   .note-cat {
     font-size: 10px;
@@ -495,11 +555,21 @@
     background: #33302A;
     color: #C9C2B4;
   }
-  .note-cat[data-cat="Positive"] { background: #24382B; color: #9FDDB0; }
   .note-cat[data-cat="Behavior"] { background: #3C2626; color: #E4A7A7; }
   .note-cat[data-cat="Attendance"] { background: #3C3226; color: #E4C6A7; }
   .note-cat[data-cat="Performance"] { background: #24303C; color: #A7C6E4; }
-  .note-cat[data-cat="Policy"] { background: #302439; color: #C6A7E4; }
+
+  .note-type {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .note-type[data-type="good"] { background: #1F3327; color: var(--good); }
+  .note-type[data-type="bad"] { background: #3C2620; color: var(--bad); }
 
   .note-row .note-text { font-size: 14px; }
 
@@ -517,7 +587,7 @@
     padding: 3px 5px;
     font-size: 11px;
     color: var(--text-dark);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
   }
 
   .note-logged {
@@ -542,7 +612,7 @@
     padding: 8px 10px;
     font-size: 13px;
     color: var(--chalk);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
     resize: vertical;
   }
   .note-add-form textarea::placeholder { color: var(--chalk-dim); }
@@ -562,7 +632,7 @@
     padding: 7px 8px;
     font-size: 12.5px;
     color: var(--chalk);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
   }
 
   .note-add-row2 button {
@@ -597,7 +667,7 @@
     padding: 8px 10px;
     font-size: 13px;
     color: var(--chalk);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
   }
   .duty-add-form > input[type="text"]::placeholder { color: var(--chalk-dim); }
 
@@ -616,7 +686,7 @@
     padding: 7px 6px;
     font-size: 13px;
     color: var(--chalk);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
   }
 
   .duty-add-row2 select,
@@ -627,7 +697,7 @@
     padding: 7px 8px;
     font-size: 12.5px;
     color: var(--chalk);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
   }
 
   .duty-add-row2 button {
@@ -645,7 +715,7 @@
 
   .duty-group { margin-bottom: 18px; }
   .duty-group-title {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Bricolage Grotesque', sans-serif;
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -667,25 +737,27 @@
   }
 
   .duty-row.overdue { border-left-color: var(--danger); }
-  .duty-row.done { border-left-color: var(--chalk-dim); opacity: 0.75; }
+
+  @keyframes dutyFlash {
+    0% { background: var(--good); }
+    100% { background: var(--card-bg); }
+  }
+  .duty-row.duty-flash { animation: dutyFlash 0.9s ease; }
 
   .duty-check {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     border-radius: 6px;
     border: 2px solid var(--copper);
     background: transparent;
-    color: transparent;
+    color: var(--copper);
     font-size: 15px;
+    font-weight: 700;
     line-height: 1;
     cursor: pointer;
     flex-shrink: 0;
   }
-  .duty-row.done .duty-check {
-    background: var(--brass);
-    border-color: var(--brass);
-    color: var(--bg-deep);
-  }
+  .duty-check:hover { background: var(--copper); color: var(--chalk); }
 
   .duty-name {
     font-weight: 600;
@@ -694,7 +766,6 @@
     flex: 1 1 140px;
     min-width: 100px;
   }
-  .duty-row.done .duty-name { text-decoration: line-through; color: var(--text-dim); }
 
   .duty-status {
     font-size: 11px;
@@ -710,7 +781,7 @@
     padding: 3px 5px;
     font-size: 11px;
     color: var(--text-dark);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
   }
 
   .duty-delete {
@@ -733,15 +804,15 @@
   <div class="tabbar">
     <button class="tab" data-tab="0">Board</button>
     <button class="tab" data-tab="1">Employee Notes</button>
-    <button class="tab" data-tab="2">Duties</button>
+    <button class="tab" data-tab="2">Regular Duties</button>
   </div>
 
   <div class="pages-viewport" id="pagesViewport">
 
     <div class="page" id="page-board">
+      <div class="page-toolbar"><button class="undo-btn" id="undoBoardBtn" disabled>&#8630; Undo</button></div>
       <header>
-        <div class="eyebrow">The list that never ends</div>
-        <h1>Bar task board</h1>
+        <h1>The list that never ends</h1>
         <p>Drag tasks between columns as their scope changes. Add new ones as they come up.</p>
       </header>
 
@@ -829,6 +900,7 @@
     </div>
 
     <div class="page" id="page-notes">
+      <div class="page-toolbar"><button class="undo-btn" id="undoNotesBtn" disabled>&#8630; Undo</button></div>
       <div class="notes-page">
 
         <div id="staffListView">
@@ -850,6 +922,11 @@
             <h2 id="detailStaffName"></h2>
             <button class="copy-btn" id="copyLogBtn">Copy log</button>
           </div>
+          <div class="note-filters" id="noteFilters" data-filter="all">
+            <button type="button" class="filter-btn active" data-filter="all">All</button>
+            <button type="button" class="filter-btn" data-filter="good">Good</button>
+            <button type="button" class="filter-btn" data-filter="bad">Bad</button>
+          </div>
           <div class="notes-list" id="notesList"></div>
           <div class="note-add-form">
             <textarea id="addNoteText" placeholder="What happened..." rows="2"></textarea>
@@ -858,10 +935,12 @@
                 <option value="Behavior">Behavior</option>
                 <option value="Attendance">Attendance</option>
                 <option value="Performance">Performance</option>
-                <option value="Policy">Policy</option>
-                <option value="Positive">Positive</option>
                 <option value="Other">Other</option>
               </select>
+              <div class="type-toggle" id="addNoteType" data-value="bad">
+                <button type="button" class="type-btn" data-type="good">Good</button>
+                <button type="button" class="type-btn active" data-type="bad">Bad</button>
+              </div>
               <input type="date" id="addNoteDate">
               <button id="addNoteBtn">+ Add</button>
             </div>
@@ -872,10 +951,11 @@
     </div>
 
     <div class="page" id="page-duties">
+      <div class="page-toolbar"><button class="undo-btn" id="undoDutiesBtn" disabled>&#8630; Undo</button></div>
       <header class="notes-header">
         <div class="eyebrow">Stay on schedule</div>
-        <h1>Duties</h1>
-        <p>Check off what's done. Each one resets on its own once the period is up &mdash; edit due dates any time.</p>
+        <h1>Regular duties</h1>
+        <p>Check one off and it reschedules itself for the next time it's actually due.</p>
       </header>
 
       <div class="duty-add-form">
@@ -992,6 +1072,7 @@
     initDragHandle(card);
 
     card.querySelector('.action').addEventListener('click', () => {
+      snapshotBoard();
       const currentCol = card.closest('.column').dataset.col;
       if (currentCol === 'cellar') {
         card.remove();
@@ -1017,22 +1098,46 @@
     hint.classList.toggle('visible', cellarList.children.length === 0);
   }
 
+  function loadBoardFromData(data) {
+    document.querySelectorAll('.cards').forEach(list => { list.innerHTML = ''; });
+    Object.keys(data).forEach(col => {
+      const list = document.querySelector('[data-list="' + col + '"]');
+      if (!list) return;
+      data[col].forEach(item => {
+        if (typeof item === 'string') {
+          list.appendChild(createCard(item));
+        } else {
+          list.appendChild(createCard(item.text, item.date ? item.date.replace('Completed ', '') : null));
+        }
+      });
+    });
+    updateCounts();
+  }
+
   // seed cards: from saved state if present, otherwise the defaults
   const savedState = loadState();
-  const dataToLoad = savedState || initialData;
-  Object.keys(dataToLoad).forEach(col => {
-    const list = document.querySelector('[data-list="' + col + '"]');
-    if (!list) return;
-    dataToLoad[col].forEach(item => {
-      if (typeof item === 'string') {
-        list.appendChild(createCard(item));
-      } else {
-        list.appendChild(createCard(item.text, item.date ? item.date.replace('Completed ', '') : null));
-      }
-    });
-  });
-  updateCounts();
+  loadBoardFromData(savedState || initialData);
   if (!savedState) saveState();
+
+  let boardUndoSnapshot = null;
+  function snapshotBoard() {
+    const state = {};
+    document.querySelectorAll('.cards').forEach(list => {
+      state[list.dataset.list] = [...list.children].map(card => ({
+        text: card.querySelector('.label').textContent,
+        date: card.querySelector('.date').textContent || null
+      }));
+    });
+    boardUndoSnapshot = state;
+    document.getElementById('undoBoardBtn').disabled = false;
+  }
+  document.getElementById('undoBoardBtn').addEventListener('click', () => {
+    if (!boardUndoSnapshot) return;
+    loadBoardFromData(boardUndoSnapshot);
+    saveState();
+    boardUndoSnapshot = null;
+    document.getElementById('undoBoardBtn').disabled = true;
+  });
 
   // drag and drop: Pointer Events, works for touch, mouse, and pen alike
   let dragCard = null, dragGhost = null, dragPlaceholder = null, activePointerId = null;
@@ -1049,6 +1154,7 @@
   }
 
   function startDrag(card, e) {
+    snapshotBoard();
     activePointerId = e.pointerId;
     dragCard = card;
     const rect = card.getBoundingClientRect();
@@ -1138,6 +1244,7 @@
     function addTask() {
       const val = input.value.trim();
       if (!val) return;
+      snapshotBoard();
       list.appendChild(createCard(val));
       input.value = '';
       updateCounts();
@@ -1154,15 +1261,20 @@
   const NOTES_KEY = 'barEmployeeNotesState';
   let notesState = loadNotesState() || { staff: [] };
   let currentStaffId = null;
+  let currentNoteFilter = 'all';
 
-  // migrate any notes saved before categories / structured dates existed
+  // migrate any notes saved before categories / good-bad typing existed
   notesState.staff.forEach(person => {
     person.notes.forEach(note => {
       if (!note.category) note.category = 'Other';
+      if (note.category === 'Policy') { note.category = 'Behavior'; note.type = note.type || 'bad'; }
+      if (note.category === 'Positive') { note.category = 'Other'; note.type = note.type || 'good'; }
+      if (!note.type) note.type = 'bad';
       if (!note.incidentDate) note.incidentDate = note.date ? isoFromLegacyLabel(note.date) : todayISO();
       if (!note.loggedDate) note.loggedDate = note.incidentDate;
     });
   });
+  saveNotesState();
 
   function isoFromLegacyLabel(label) {
     const d = new Date(label);
@@ -1187,6 +1299,21 @@
   function uid(prefix) {
     return prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 7);
   }
+
+  let notesUndoSnapshot = null;
+  function snapshotNotes() {
+    notesUndoSnapshot = JSON.parse(JSON.stringify(notesState));
+    document.getElementById('undoNotesBtn').disabled = false;
+  }
+  document.getElementById('undoNotesBtn').addEventListener('click', () => {
+    if (!notesUndoSnapshot) return;
+    notesState = notesUndoSnapshot;
+    notesUndoSnapshot = null;
+    document.getElementById('undoNotesBtn').disabled = true;
+    saveNotesState();
+    renderStaffList();
+    if (!document.getElementById('staffDetailView').hidden) renderNotesList();
+  });
 
   function renderStaffList() {
     const container = document.getElementById('staffCards');
@@ -1221,21 +1348,42 @@
     document.getElementById('staffDetailView').hidden = false;
     document.getElementById('detailStaffName').textContent = person.name;
     document.getElementById('addNoteDate').value = todayISO();
+    currentNoteFilter = 'all';
+    document.querySelectorAll('#noteFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
     renderNotesList();
   }
+
+  document.querySelectorAll('#noteFilters .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentNoteFilter = btn.dataset.filter;
+      document.querySelectorAll('#noteFilters .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderNotesList();
+    });
+  });
+
+  document.querySelectorAll('#addNoteType .type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#addNoteType .type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('addNoteType').dataset.value = btn.dataset.type;
+    });
+  });
 
   function renderNotesList() {
     const person = notesState.staff.find(p => p.id === currentStaffId);
     const list = document.getElementById('notesList');
     list.innerHTML = '';
-    if (!person || person.notes.length === 0) {
+    if (!person) return;
+    const visible = person.notes.filter(n => currentNoteFilter === 'all' || n.type === currentNoteFilter);
+    if (visible.length === 0) {
       const hint = document.createElement('div');
       hint.className = 'empty-hint';
-      hint.textContent = 'No notes yet.';
+      hint.textContent = person.notes.length === 0 ? 'No notes yet.' : 'Nothing matches this filter.';
       list.appendChild(hint);
       return;
     }
-    [...person.notes]
+    [...visible]
       .sort((a, b) => b.incidentDate.localeCompare(a.incidentDate))
       .forEach(note => {
         const row = document.createElement('div');
@@ -1243,6 +1391,7 @@
         row.innerHTML =
           '<div class="note-top">' +
             '<span class="note-cat" data-cat="' + note.category + '"></span>' +
+            '<span class="note-type" data-type="' + note.type + '"></span>' +
             '<button class="note-delete" aria-label="Delete note">&times;</button>' +
           '</div>' +
           '<span class="note-text"></span>' +
@@ -1252,21 +1401,25 @@
             '<button class="note-toggle" aria-label="Toggle addressed">&check;</button>' +
           '</div>';
         row.querySelector('.note-cat').textContent = note.category;
+        row.querySelector('.note-type').textContent = note.type === 'good' ? 'Good' : 'Bad';
         row.querySelector('.note-text').textContent = note.text;
         row.querySelector('.note-date-edit').value = note.incidentDate;
         row.querySelector('.note-logged').textContent = 'Logged ' + formatDateDisplay(note.loggedDate);
         row.querySelector('.note-date-edit').addEventListener('change', e => {
+          snapshotNotes();
           note.incidentDate = e.target.value || todayISO();
           saveNotesState();
           renderNotesList();
         });
         row.querySelector('.note-toggle').addEventListener('click', () => {
+          snapshotNotes();
           note.addressed = !note.addressed;
           saveNotesState();
           renderNotesList();
           renderStaffList();
         });
         row.querySelector('.note-delete').addEventListener('click', () => {
+          snapshotNotes();
           person.notes = person.notes.filter(n => n.id !== note.id);
           saveNotesState();
           renderNotesList();
@@ -1284,6 +1437,7 @@
     const input = document.getElementById('addStaffInput');
     const val = input.value.trim();
     if (!val) return;
+    snapshotNotes();
     notesState.staff.push({ id: uid('staff'), name: val, notes: [] });
     input.value = '';
     saveNotesState();
@@ -1297,12 +1451,15 @@
     if (!val || !currentStaffId) return;
     const person = notesState.staff.find(p => p.id === currentStaffId);
     if (!person) return;
+    snapshotNotes();
     const category = document.getElementById('addNoteCategory').value;
+    const type = document.getElementById('addNoteType').dataset.value;
     const incidentDate = document.getElementById('addNoteDate').value || todayISO();
     person.notes.push({
       id: uid('note'),
       text: val,
       category: category,
+      type: type,
       incidentDate: incidentDate,
       loggedDate: todayISO(),
       addressed: false
@@ -1319,7 +1476,7 @@
     if (!person) return;
     const lines = [...person.notes]
       .sort((a, b) => a.incidentDate.localeCompare(b.incidentDate))
-      .map(n => '[' + n.incidentDate + '] (' + n.category + (n.addressed ? ', addressed' : '') + ') ' + n.text);
+      .map(n => '[' + n.incidentDate + '] (' + n.category + ', ' + (n.type === 'good' ? 'Good' : 'Bad') + (n.addressed ? ', addressed' : '') + ') ' + n.text);
     const text = person.name + ' \u2014 note log\n' + (lines.length ? lines.join('\n') : 'No notes logged.');
     const btn = document.getElementById('copyLogBtn');
     const original = btn.textContent;
@@ -1340,7 +1497,7 @@
 
   renderStaffList();
 
-  // ---------- Duties ----------
+  // ---------- Regular Duties ----------
   const DUTIES_KEY = 'barDutiesState';
   const dutySeed = [
     { name: 'Check manager logs', unit: 'day', count: 1 },
@@ -1372,12 +1529,27 @@
         name: d.name,
         unit: d.unit,
         count: d.count,
-        dueDate: todayISO(),
-        checked: false
+        dueDate: todayISO()
       }))
     };
     saveDutiesState();
   }
+  // drop the old persisted "checked" flag from any pre-existing save; due date is now the only source of truth
+  dutiesState.duties.forEach(d => { delete d.checked; });
+
+  let dutiesUndoSnapshot = null;
+  function snapshotDuties() {
+    dutiesUndoSnapshot = JSON.parse(JSON.stringify(dutiesState));
+    document.getElementById('undoDutiesBtn').disabled = false;
+  }
+  document.getElementById('undoDutiesBtn').addEventListener('click', () => {
+    if (!dutiesUndoSnapshot) return;
+    dutiesState = dutiesUndoSnapshot;
+    dutiesUndoSnapshot = null;
+    document.getElementById('undoDutiesBtn').disabled = true;
+    saveDutiesState();
+    renderDuties();
+  });
 
   function cadenceLabel(unit, count) {
     if (count === 1) {
@@ -1395,17 +1567,22 @@
     return count * 30;
   }
 
-  function rollOverDuty(duty) {
-    if (duty.checked && todayISO() > duty.dueDate) {
-      duty.dueDate = advanceDate(duty.dueDate, duty.unit, duty.count);
-      duty.checked = false;
+  // advance from the current due date, keeping the same calendar pattern (e.g. same weekday,
+  // same day-of-month), skipping forward past today if it was overdue by more than one cycle
+  function nextSensibleDue(dueDateISO, unit, count) {
+    let next = advanceDate(dueDateISO, unit, count);
+    const t = todayISO();
+    let guard = 0;
+    while (next <= t && guard < 500) {
+      next = advanceDate(next, unit, count);
+      guard++;
     }
+    return next;
   }
 
-  function renderDuties() {
-    dutiesState.duties.forEach(rollOverDuty);
-    saveDutiesState();
+  let justCompletedDutyId = null;
 
+  function renderDuties() {
     const container = document.getElementById('dutyGroups');
     container.innerHTML = '';
 
@@ -1435,9 +1612,9 @@
         groupEl.appendChild(title);
 
         groups[label].duties.forEach(duty => {
-          const overdue = !duty.checked && todayISO() > duty.dueDate;
+          const overdue = todayISO() > duty.dueDate;
           const row = document.createElement('div');
-          row.className = 'duty-row' + (duty.checked ? ' done' : '') + (overdue ? ' overdue' : '');
+          row.className = 'duty-row' + (overdue ? ' overdue' : '') + (duty.id === justCompletedDutyId ? ' duty-flash' : '');
           row.innerHTML =
             '<button class="duty-check" aria-label="Mark done">&check;</button>' +
             '<span class="duty-name"></span>' +
@@ -1446,22 +1623,25 @@
             '<input type="date" class="duty-date-edit">';
           row.querySelector('.duty-name').textContent = duty.name;
           row.querySelector('.duty-date-edit').value = duty.dueDate;
-          row.querySelector('.duty-status').textContent = duty.checked
-            ? 'Done \u00b7 resets ' + formatDateDisplay(duty.dueDate)
-            : (overdue ? 'Overdue since ' + formatDateDisplay(duty.dueDate) : 'Due ' + formatDateDisplay(duty.dueDate));
+          row.querySelector('.duty-status').textContent = overdue
+            ? 'Overdue since ' + formatDateDisplay(duty.dueDate)
+            : 'Due ' + formatDateDisplay(duty.dueDate);
 
           row.querySelector('.duty-check').addEventListener('click', () => {
-            duty.checked = !duty.checked;
-            rollOverDuty(duty);
+            snapshotDuties();
+            duty.dueDate = nextSensibleDue(duty.dueDate, duty.unit, duty.count);
+            justCompletedDutyId = duty.id;
             saveDutiesState();
             renderDuties();
           });
           row.querySelector('.duty-date-edit').addEventListener('change', e => {
+            snapshotDuties();
             duty.dueDate = e.target.value || todayISO();
             saveDutiesState();
             renderDuties();
           });
           row.querySelector('.duty-delete').addEventListener('click', () => {
+            snapshotDuties();
             dutiesState.duties = dutiesState.duties.filter(d => d.id !== duty.id);
             saveDutiesState();
             renderDuties();
@@ -1472,17 +1652,20 @@
 
         container.appendChild(groupEl);
       });
+
+    justCompletedDutyId = null;
   }
 
   document.getElementById('addDutyBtn').addEventListener('click', () => {
     const nameInput = document.getElementById('dutyNameInput');
     const name = nameInput.value.trim();
     if (!name) return;
+    snapshotDuties();
     const count = Math.max(1, parseInt(document.getElementById('dutyCountInput').value, 10) || 1);
     const unit = document.getElementById('dutyUnitInput').value;
     const dueInput = document.getElementById('dutyDueInput');
     const dueDate = dueInput.value || todayISO();
-    dutiesState.duties.push({ id: uid('duty'), name: name, unit: unit, count: count, dueDate: dueDate, checked: false });
+    dutiesState.duties.push({ id: uid('duty'), name: name, unit: unit, count: count, dueDate: dueDate });
     nameInput.value = '';
     document.getElementById('dutyCountInput').value = 1;
     dueInput.value = '';
